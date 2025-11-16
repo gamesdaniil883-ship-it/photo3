@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Сюрприз</title>
+<style>
+  body {
+    background: black;
+    color: white;
+    font-size: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    cursor: pointer;
+    user-select: none;
+  }
+  #flash {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: red;
+    z-index: 9999;
+    animation: flashAnim 0.08s infinite;
+  }
+  @keyframes flashAnim {
+    0% { opacity: 0.2; }
+    50% { opacity: 1; }
+    100% { opacity: 0.2; }
+  }
+  #face {
+    display: none;
+    position: fixed;
+    inset: 0;
+    object-fit: cover;
+    z-index: 10000;
+  }
+</style>
+</head>
+<body onclick="startScreamer()">
+  Нажми, чтобы увидеть секрет 😈
+<div id="flash"></div>
+<img id="face" src="data:image/jpeg;base64,
+/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxAQEhUQEBAVFRUVFRUVFRUVFRUVFRUWFxUVFRUY
+HSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGxAQGy0lICUtLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIALcBEwMBIgACEQEDEQH/xAAb
+AAEAAgMBAQAAAAAAAAAAAAAABQYBBAcDAv/EADkQAAIBAwIDBAYABQMFAAAAAAECAwAEEQUhMUEG
+EkFREyJhcYGRoQcjQlKhsbLw8RVCU8HR4fEkM//EABoBAQADAQEBAAAAAAAAAAAAAAABAwQCBQb/
+EACQRAQEAAgICAgIDAQAAAAAAAAABAhEDIRIxQVEiYYGRBRSh/9oADAMBAAIRAxEAPwD1+iiigAo
+oooAKKKKACiiigAoooqEwE5IywT0AqilplqRkzOc5x0B9aKKACiiigAooooAKKKKACiiigAooooA
+KKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooA//Z" />
+<script>
+function startScreamer() {
+  document.body.innerHTML = "";
+  document.body.style.background = "black";
+  const flash = document.getElementById("flash");
+  const face = document.getElementById("face");
+  flash.style.display = "block";
+  face.style.display = "block";
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = "square";
+  osc.frequency.value = 480;
+  gain.gain.value = 1.0;
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start();
+  setTimeout(() => osc.stop(), 2000);
+}
+</script>
+</body>
+</html>
